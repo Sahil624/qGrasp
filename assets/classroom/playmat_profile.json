@@ -1,0 +1,55 @@
+{
+  "paper": "A4",
+  "landscape": true,
+  "dpi": 300,
+  "profile": {
+    "rows": 4,
+    "cols": 6,
+    "cell_mm": 32.0,
+    "margin_mm": 10.0,
+    "anchor_marker_mm": 24.0,
+    "anchor_ids": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "grid_rect_px": {
+      "x0": 495,
+      "y0": 495,
+      "x1": 2763,
+      "y1": 2007
+    }
+  },
+  "tag_mm": 20.0,
+  "card_mm": 34.0,
+  "gate_marker_mapping": {
+    "0": "H",
+    "1": "X",
+    "2": "Y",
+    "3": "Z",
+    "4": "CX_C",
+    "5": "CX_T",
+    "6": "SWAP_A",
+    "7": "SWAP_B"
+  },
+  "aruco": {
+    "dictionary": "DICT_4X4_50",
+    "gate_marker_ids": {
+      "H": 0,
+      "X": 1,
+      "Y": 2,
+      "Z": 3,
+      "CX_C": 4,
+      "CX_T": 5,
+      "SWAP_A": 6,
+      "SWAP_B": 7
+    },
+    "anchor_marker_ids": {
+      "A1": 10,
+      "A2": 11,
+      "A3": 12,
+      "A4": 13
+    }
+  }
+}

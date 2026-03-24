@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "QuantumGrasp",
+    "slug": "quantum-grasp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#11111b"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Camera is used to scan QR code markers for quantum gates."
+      },
+      "bundleIdentifier": "com.anonymous.quantumgrasp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#11111b",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "CAMERA",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.anonymous.quantumgrasp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Camera is used to scan QR code markers for quantum gates."
+        }
+      ],
+      "@reactvision/react-viro"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuantumGrasp - Printable QR Code Markers</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
+    h1 { text-align: center; }
+    .markers { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; margin-top: 24px; }
+    .marker { text-align: center; padding: 16px; border: 1px solid #ccc; border-radius: 8px; }
+    .marker canvas, .marker img { display: block; margin: 0 auto 8px; }
+    .marker p { margin: 0; font-weight: bold; }
+    @media print { body { margin: 0; } .marker { break-inside: avoid; } }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+</head>
+<body>
+  <h1>QuantumGrasp - Gate Markers</h1>
+  <p>Print this page and cut out each marker. Scan with the app to add the corresponding gate.</p>
+  <div class="markers" id="markers"></div>
+  <script>
+    const gates = [
+      { code: 'H', label: 'H (Hadamard)' },
+      { code: 'X', label: 'X (Pauli-X)' },
+      { code: 'Y', label: 'Y (Pauli-Y)' },
+      { code: 'Z', label: 'Z (Pauli-Z)' },
+      { code: 'CX', label: 'CX (CNOT)' }
+    ];
+    const container = document.getElementById('markers');
+    gates.forEach(g => {
+      const div = document.createElement('div');
+      div.className = 'marker';
+      const canvas = document.createElement('canvas');
+      QRCode.toCanvas(canvas, g.code, { width: 180, margin: 2 }, () => {});
+      div.appendChild(canvas);
+      div.innerHTML += `<p>${g.label}</p>`;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

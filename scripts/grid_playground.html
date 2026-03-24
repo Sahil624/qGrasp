@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuantumGrasp Virtual Playmat</title>
+  <style>
+    * { box-sizing: border-box; user-select: none; }
+    body { margin: 0; background: #0f1020; font-family: Arial, sans-serif; }
+    .stage {
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+    }
+    .board {
+      position: relative;
+      width: min(1300px, 96vw);
+    }
+    .playmat {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 2px solid #1f1f1f;
+      background: #fff;
+    }
+    .palette {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      min-height: 12%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 6px;
+      background: linear-gradient(to bottom, rgba(15, 16, 32, 0.92), rgba(15, 16, 32, 0.55), transparent);
+      z-index: 2;
+      pointer-events: auto;
+    }
+    .palette img {
+      width: 52px;
+      height: auto;
+      cursor: copy;
+      touch-action: none;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    }
+    .palette img:active { cursor: grabbing; }
+    .hint {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.65);
+      pointer-events: none;
+      z-index: 2;
+      max-width: 55%;
+    }
+    .layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .layer .card {
+      pointer-events: auto;
+    }
+    .card {
+      position: absolute;
+      width: 86px;
+      height: auto;
+      cursor: grab;
+      touch-action: none;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    }
+    .card:active { cursor: grabbing; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="board">
+      <img class="playmat" src="../assets/classroom/playmat_a4_4x6.png" alt="Playmat" />
+      <div id="palette" class="palette" aria-label="Gate palette — drag to spawn copies on the mat"></div>
+      <span class="hint">Drag from the strip to place gates; same gate can be used many times.</span>
+      <div id="layer" class="layer"></div>
+    </div>
+  </div>
+
+  <script>
+    const CODES = ['H', 'X', 'Y', 'Z', 'CX_C', 'CX_T', 'SWAP_A', 'SWAP_B'];
+    const palette = document.getElementById('palette');
+    const layer = document.getElementById('layer');
+    const board = document.querySelector('.board');
+
+    /** @type {{ el: HTMLElement, pointerId: number, dx: number, dy: number } | null} */
+    let dragState = null;
+
+    function placeCenterPx(el, clientX, clientY) {
+      const br = board.getBoundingClientRect();
+      el.style.left = `${clientX - br.left}px`;
+      el.style.top = `${clientY - br.top}px`;
+    }
+
+    /** New instance on the mat (palette thumbs stay fixed). */
+    function createPlacedCard(code) {
+      const img = document.createElement('img');
+      img.className = 'card';
+      img.src = `../assets/classroom/cards/${code}.png`;
+      img.alt = code;
+      img.addEventListener('pointerdown', (e) => startDragPlaced(img, e));
+      return img;
+    }
+
+    function pointerOffsetInEl(el, clientX, clientY) {
+      const rect = el.getBoundingClientRect();
+      return { dx: clientX - rect.left, dy: clientY - rect.top };
+    }
+
+    function movePlacedCard(el, clientX, clientY, dx, dy) {
+      const br = board.getBoundingClientRect();
+      const x = clientX - br.left - dx + el.clientWidth / 2;
+      const y = clientY - br.top - dy + el.clientHeight / 2;
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+    }
+
+    board.addEventListener('pointermove', (e) => {
+      if (!dragState || e.pointerId !== dragState.pointerId) return;
+      movePlacedCard(dragState.el, e.clientX, e.clientY, dragState.dx, dragState.dy);
+    });
+
+    function endDrag(e) {
+      if (!dragState || e.pointerId !== dragState.pointerId) return;
+      try {
+        dragState.el.releasePointerCapture(dragState.pointerId);
+      } catch (_) { /* ignore */ }
+      dragState = null;
+    }
+
+    board.addEventListener('pointerup', endDrag);
+    board.addEventListener('pointercancel', endDrag);
+
+    function startDragPlaced(el, e) {
+      e.preventDefault();
+      const o = pointerOffsetInEl(el, e.clientX, e.clientY);
+      dragState = { el, pointerId: e.pointerId, dx: o.dx, dy: o.dy };
+      el.setPointerCapture(e.pointerId);
+    }
+
+    function spawnFromPalette(code, e) {
+      e.preventDefault();
+      const el = createPlacedCard(code);
+      layer.appendChild(el);
+      placeCenterPx(el, e.clientX, e.clientY);
+      const o = pointerOffsetInEl(el, e.clientX, e.clientY);
+      dragState = { el, pointerId: e.pointerId, dx: o.dx, dy: o.dy };
+      el.setPointerCapture(e.pointerId);
+    }
+
+    CODES.forEach((code) => {
+      const thumb = document.createElement('img');
+      thumb.src = `../assets/classroom/cards/${code}.png`;
+      thumb.alt = code;
+      thumb.title = `${code} — drag onto playmat (unlimited copies)`;
+      thumb.addEventListener('pointerdown', (e) => spawnFromPalette(code, e));
+      palette.appendChild(thumb);
+    });
+  </script>
+</body>
+</html>
