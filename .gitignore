@@ -38,6 +38,6 @@ debug/*
 *.tsbuildinfo
 
 # generated native folders
-/ios
-/android
+# /ios
+# /android
 .tmp_test/*
