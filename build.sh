@@ -2,8 +2,8 @@
 
 # Configuration
 PROJECT_ROOT=$(pwd)
-# `full` flavor = Viro + ARM native stack; use `noviro` for x86 emulator APKs if needed.
-APK_RELATIVE_PATH="android/app/build/outputs/apk/full/release/app-full-release.apk"
+# Default release = Viro + ARM native stack; use `assembleNoviro` / npm run android:apk:noviro for x86 emulator APKs.
+APK_RELATIVE_PATH="android/app/build/outputs/apk/release/app-release.apk"
 APK_FULL_PATH="$PROJECT_ROOT/$APK_RELATIVE_PATH"
 
 # 1. Generate the Javascript Bundle
@@ -22,7 +22,7 @@ fi
 # 3. Clean and Build APK
 echo "Running Gradle AssembleRelease..."
 ./gradlew clean
-./gradlew assembleFullRelease
+./gradlew assembleRelease
 
 # 4. Return to Root
 cd "$PROJECT_ROOT"
@@ -37,7 +37,7 @@ if [ -f "$APK_FULL_PATH" ]; then
     if [ -n "$DEVICE_READY" ]; then
         echo "Installing to device via tunnel..."
         # Remove existing debug version to prevent signature conflicts
-        adb uninstall com.your.package.name 
+        adb uninstall edu.ksu.quantumgrasp
         adb install -r -d "$APK_FULL_PATH"
         echo "Installation complete. The app is now standalone."
     else

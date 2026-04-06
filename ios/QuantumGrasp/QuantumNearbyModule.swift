@@ -6,7 +6,7 @@ import React
 @objc(QuantumNearbyModule)
 class QuantumNearbyModule: RCTEventEmitter, MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate, MCSessionDelegate {
   private let serviceType = "qgrasp-qnet"
-  private let appServiceId = "com.anonymous.quantumgrasp.qnet"
+  private let appServiceId = "edu.ksu.quantumgrasp.qnet"
 
   private var mcSession: MCSession?
   private var advertiser: MCNearbyServiceAdvertiser?

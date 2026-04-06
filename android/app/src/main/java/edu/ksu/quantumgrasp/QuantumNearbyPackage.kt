@@ -1,13 +1,13 @@
-package com.anonymous.quantumgrasp
+package edu.ksu.quantumgrasp
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.ViewManager
 
-class GridDetectorPackage : ReactPackage {
+class QuantumNearbyPackage : ReactPackage {
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule> {
-        return mutableListOf(GridDetectorModule(reactContext))
+        return mutableListOf(QuantumNearbyModule(reactContext))
     }
 
     override fun createViewManagers(
@@ -16,4 +16,3 @@ class GridDetectorPackage : ReactPackage {
         return mutableListOf()
     }
 }
-

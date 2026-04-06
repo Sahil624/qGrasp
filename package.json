@@ -4,13 +4,18 @@
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
-    "android": "expo run:android --variant fullDebug",
-    "android:noviro": "expo run:android --variant noviroDebug",
-    "android:apk": "cd android && ./gradlew assembleFullRelease",
-    "android:apk:noviro": "cd android && ./gradlew assembleNoviroRelease",
-    "android:apk:noviro:debug": "cd android && ./gradlew assembleNoviroDebug",
+    "android": "expo run:android",
+    "android:noviro": "expo run:android --variant noviro",
+    "android:no-bundler": "expo run:android --no-bundler",
+    "android:no-bundler:noviro": "expo run:android --no-bundler --variant noviro",
+    "android:no-bundle": "expo run:android --no-bundler",
+    "android:no-bundle:noviro": "expo run:android --no-bundler --variant noviro",
+    "android:apk": "cd android && ./gradlew assembleRelease",
+    "android:apk:noviro": "cd android && ./gradlew assembleNoviro",
+    "android:apk:noviro:debug": "cd android && ./gradlew assembleNoviro",
     "ios": "expo run:ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "sync:assets": "python3 scripts/sync_assets_from_app_json.py"
   },
   "dependencies": {
     "@kirkelliott/ket": "^0.5.0",

@@ -1,4 +1,4 @@
-package com.anonymous.quantumgrasp
+package edu.ksu.quantumgrasp
 
 import android.os.Build
 import android.os.Bundle

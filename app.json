@@ -4,11 +4,11 @@
     "slug": "quantum-grasp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icons/icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/icons/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#11111b"
     },
@@ -17,24 +17,22 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Camera is used to scan QR code markers for quantum gates."
       },
-      "bundleIdentifier": "com.anonymous.quantumgrasp"
+      "bundleIdentifier": "edu.ksu.quantumgrasp"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#11111b",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/icons/adaptive-icon.png"
       },
       "permissions": [
         "CAMERA",
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.anonymous.quantumgrasp"
+      "package": "edu.ksu.quantumgrasp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icons/favicon.png"
     },
     "plugins": [
       [
@@ -42,8 +40,7 @@
         {
           "cameraPermission": "Camera is used to scan QR code markers for quantum gates."
         }
-      ],
-      "@reactvision/react-viro"
+      ]
     ]
   }
 }

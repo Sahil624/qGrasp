@@ -29,9 +29,9 @@ react {
     // codegenDir = file("../../node_modules/@react-native/codegen")
 
     /* Variants */
-    // Only fullDebug skips embedded bundle and expects Metro. noviroDebug must NOT be listed so
-    // assembleNoviroDebug embeds JS (standalone APK). Use fullDebug + emulator for live Metro.
-    debuggableVariants = ["fullDebug"]
+    // Only `debug` skips embedded bundle and expects Metro. `noviro` must NOT be listed so
+    // assembleNoviro embeds JS (standalone APK). Use debug + emulator for live Metro.
+    debuggableVariants = ["debug"]
 
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
@@ -86,26 +86,15 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.quantumgrasp'
+    namespace 'edu.ksu.quantumgrasp'
     defaultConfig {
-        applicationId 'com.anonymous.quantumgrasp'
+        applicationId 'edu.ksu.quantumgrasp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
 
         buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
-    }
-    flavorDimensions "arstack"
-    productFlavors {
-        full {
-            dimension "arstack"
-            buildConfigField "boolean", "VIRO_ENABLED", "true"
-        }
-        noviro {
-            dimension "arstack"
-            buildConfigField "boolean", "VIRO_ENABLED", "false"
-        }
     }
     signingConfigs {
         debug {
@@ -118,8 +107,15 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            buildConfigField "boolean", "VIRO_ENABLED", "true"
+        }
+        /** No Viro / ARCore native stack (e.g. x86 emulators). Mirrors debug; do not use initWith(debug) or src/viro would merge in. */
+        noviro {
+            signingConfig signingConfigs.debug
+            buildConfigField "boolean", "VIRO_ENABLED", "false"
         }
         release {
+            buildConfigField "boolean", "VIRO_ENABLED", "true"
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
@@ -139,6 +135,14 @@ android {
     }
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
+    }
+    sourceSets {
+        debug {
+            java.srcDir 'src/viro/java'
+        }
+        release {
+            java.srcDir 'src/viro/java'
+        }
     }
 }
 
@@ -167,17 +171,28 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation 'org.opencv:opencv:4.10.0'
     implementation 'com.google.android.gms:play-services-nearby:18.7.0'
-    // Viro (ARM prebuilt native libs): only `full` — use `noviro` on x86/x86_64 emulators.
-    fullImplementation project(':gvr_common')
-    fullImplementation project(':arcore_client')
-    fullImplementation project(path: ':react_viro')
-    fullImplementation project(path: ':viro_renderer')
-    fullImplementation 'androidx.media3:media3-exoplayer:1.1.1'
-    fullImplementation 'androidx.media3:media3-exoplayer-dash:1.1.1'
-    fullImplementation 'androidx.media3:media3-exoplayer-hls:1.1.1'
-    fullImplementation 'androidx.media3:media3-exoplayer-smoothstreaming:1.1.1'
-    fullImplementation 'com.google.protobuf.nano:protobuf-javanano:3.1.0'
-    fullImplementation 'com.google.android.gms:play-services-location:21.0.1'
+    // Viro (ARM prebuilt native libs): not linked for `noviro` buildType — use that on x86/x86_64 emulators.
+    debugImplementation project(':gvr_common')
+    debugImplementation project(':arcore_client')
+    debugImplementation project(path: ':react_viro')
+    debugImplementation project(path: ':viro_renderer')
+    debugImplementation 'androidx.media3:media3-exoplayer:1.1.1'
+    debugImplementation 'androidx.media3:media3-exoplayer-dash:1.1.1'
+    debugImplementation 'androidx.media3:media3-exoplayer-hls:1.1.1'
+    debugImplementation 'androidx.media3:media3-exoplayer-smoothstreaming:1.1.1'
+    debugImplementation 'com.google.protobuf.nano:protobuf-javanano:3.1.0'
+    debugImplementation 'com.google.android.gms:play-services-location:21.0.1'
+
+    releaseImplementation project(':gvr_common')
+    releaseImplementation project(':arcore_client')
+    releaseImplementation project(path: ':react_viro')
+    releaseImplementation project(path: ':viro_renderer')
+    releaseImplementation 'androidx.media3:media3-exoplayer:1.1.1'
+    releaseImplementation 'androidx.media3:media3-exoplayer-dash:1.1.1'
+    releaseImplementation 'androidx.media3:media3-exoplayer-hls:1.1.1'
+    releaseImplementation 'androidx.media3:media3-exoplayer-smoothstreaming:1.1.1'
+    releaseImplementation 'com.google.protobuf.nano:protobuf-javanano:3.1.0'
+    releaseImplementation 'com.google.android.gms:play-services-location:21.0.1'
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";

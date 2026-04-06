@@ -1,4 +1,4 @@
-package com.anonymous.quantumgrasp
+package edu.ksu.quantumgrasp
 
 import android.util.Base64
 import android.util.Log
@@ -32,7 +32,7 @@ class QuantumNearbyModule(private val reactContext: ReactApplicationContext) :
 
     private val tag = "QuantumNearby"
     private val connectionsClient = Nearby.getConnectionsClient(reactContext.applicationContext)
-    private val serviceId = "com.anonymous.quantumgrasp.qnet"
+    private val serviceId = "edu.ksu.quantumgrasp.qnet"
 
     private var advertising = false
     private var discovering = false

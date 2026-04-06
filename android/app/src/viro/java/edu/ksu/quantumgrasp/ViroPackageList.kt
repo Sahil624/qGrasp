@@ -1,4 +1,4 @@
-package com.anonymous.quantumgrasp
+package edu.ksu.quantumgrasp
 
 import com.facebook.react.ReactPackage
 import com.viromedia.bridge.ReactViroPackage
