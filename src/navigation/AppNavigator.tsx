@@ -5,12 +5,21 @@ import CircuitScreen from '../screens/CircuitScreen';
 import ScannerScreen from '../screens/ScannerScreen';
 import MeasurementScreen from '../screens/MeasurementScreen';
 import ARViewScreen from '../screens/ARViewScreen';
+import MultiplayerHomeScreen from '../screens/multiplayer/MultiplayerHomeScreen';
+import HostLobbyScreen from '../screens/multiplayer/HostLobbyScreen';
+import JoinNearbyScreen from '../screens/multiplayer/JoinNearbyScreen';
+import MultiplayerScenarioScreen from '../screens/multiplayer/MultiplayerScenarioScreen';
+import { useNearbyListeners } from '../services/multiplayer/useNearbyListeners';
 
 export type RootStackParamList = {
     Circuit: undefined;
     Scanner: undefined;
     Measurement: undefined;
     ARView: undefined;
+    MultiplayerHome: undefined;
+    HostLobby: undefined;
+    JoinNearby: undefined;
+    MultiplayerScenario: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -37,6 +46,7 @@ const screenOptions = {
 };
 
 export default function AppNavigator() {
+    useNearbyListeners();
     return (
         <NavigationContainer theme={DarkTheme}>
             <Stack.Navigator screenOptions={screenOptions}>
@@ -59,6 +69,26 @@ export default function AppNavigator() {
                     name="ARView"
                     component={ARViewScreen}
                     options={{ title: 'AR Bloch Sphere' }}
+                />
+                <Stack.Screen
+                    name="MultiplayerHome"
+                    component={MultiplayerHomeScreen}
+                    options={{ title: 'Multiplayer' }}
+                />
+                <Stack.Screen
+                    name="HostLobby"
+                    component={HostLobbyScreen}
+                    options={{ title: 'Host session' }}
+                />
+                <Stack.Screen
+                    name="JoinNearby"
+                    component={JoinNearbyScreen}
+                    options={{ title: 'Join nearby' }}
+                />
+                <Stack.Screen
+                    name="MultiplayerScenario"
+                    component={MultiplayerScenarioScreen}
+                    options={{ title: 'Classroom scenario' }}
                 />
             </Stack.Navigator>
         </NavigationContainer>

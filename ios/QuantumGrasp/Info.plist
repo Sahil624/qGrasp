@@ -53,11 +53,14 @@
     <key>NSBonjourServices</key>
     <array>
       <string>_expo._tcp</string>
+      <string>_qgrasp-qnet._tcp</string>
     </array>
     <key>NSCameraUsageDescription</key>
     <string>Camera is used to scan QR code markers for quantum gates.</string>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Bluetooth is used to find nearby classmates for multiplayer quantum activities.</string>
     <key>NSLocalNetworkUsageDescription</key>
-    <string>Expo Dev Launcher uses the local network to discover and connect to development servers running on your computer.</string>
+    <string>Local network is used for multiplayer quantum sessions (nearby peers) and, in development, Expo Dev Launcher.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to use your microphone</string>
     <key>NSMotionUsageDescription</key>

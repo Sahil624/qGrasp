@@ -11,6 +11,8 @@
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		F11748532D0307B40044C1D2 /* QuantumNearbyModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748512D0307B40044C1D0 /* QuantumNearbyModule.swift */; };
+		F11748542D0307B40044C1D3 /* QuantumNearbyModule.m in Sources */ = {isa = PBXBuildFile; fileRef = F11748522D0307B40044C1D1 /* QuantumNearbyModule.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = QuantumGrasp/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* QuantumGrasp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "QuantumGrasp-Bridging-Header.h"; path = "QuantumGrasp/QuantumGrasp-Bridging-Header.h"; sourceTree = "<group>"; };
+		F11748512D0307B40044C1D0 /* QuantumNearbyModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuantumNearbyModule.swift; path = QuantumGrasp/QuantumNearbyModule.swift; sourceTree = "<group>"; };
+		F11748522D0307B40044C1D1 /* QuantumNearbyModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = QuantumNearbyModule.m; path = QuantumGrasp/QuantumNearbyModule.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +43,8 @@
 			isa = PBXGroup;
 			children = (
 				F11748412D0307B40044C1D9 /* AppDelegate.swift */,
+				F11748512D0307B40044C1D0 /* QuantumNearbyModule.swift */,
+				F11748522D0307B40044C1D1 /* QuantumNearbyModule.m */,
 				F11748442D0722820044C1D9 /* QuantumGrasp-Bridging-Header.h */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -106,7 +112,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				9C607287D54B472BA12265F5 /* [Expo Dev Launcher] Strip Local Network Keys for Release */,
+				AD7FFA0A81C54EFEA60F5458 /* [Expo Dev Launcher] Strip Local Network Keys for Release */,
 			);
 			buildRules = (
 			);
@@ -223,7 +229,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-QuantumGrasp/Pods-QuantumGrasp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9C607287D54B472BA12265F5 /* [Expo Dev Launcher] Strip Local Network Keys for Release */ = {
+		AD7FFA0A81C54EFEA60F5458 /* [Expo Dev Launcher] Strip Local Network Keys for Release */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -279,6 +285,8 @@ fi
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
+				F11748532D0307B40044C1D2 /* QuantumNearbyModule.swift in Sources */,
+				F11748542D0307B40044C1D3 /* QuantumNearbyModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+import { describeCustomNativeBlocker } from './nativeRuntime';
 import {
     GateTagDetection,
     GRID_SCAN_PROFILES,
@@ -51,18 +52,18 @@ export async function detectGridTagsFromImageUri(imageUri: string): Promise<{
     warnings: string[];
 }> {
     if (!GridDetector?.detectFromImage) {
+        const blocker = describeCustomNativeBlocker();
         throw new Error(
-            'Native grid detector is not installed. Build a dev client with GridDetector module.'
+            blocker ??
+                'Native grid detector is not linked. Rebuild the dev client: npx expo run:android (or ios).'
         );
     }
 
     const nativeResult = await GridDetector.detectFromImage(imageUri);
-    console.log('nativeResult', nativeResult);
     const frame = preprocessFrameDetections({
         tags: nativeResult.tags ?? [],
     });
     const profile = buildProfileFromNativeHint(nativeResult.profile, frame.tags);
-    console.log('profile', profile);
     return {
         detections: frame.tags,
         profile,

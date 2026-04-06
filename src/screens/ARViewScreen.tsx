@@ -1,11 +1,21 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
     View,
     Text,
     StyleSheet,
     ScrollView,
+    Platform,
 } from 'react-native';
+import * as Device from 'expo-device';
 import { useCircuitStore } from '../services/useCircuitStore';
+
+/** Skip Viro on web, simulators, and emulators so the rest of the app can be tested without AR native stack. */
+function shouldAttemptViroNative(): boolean {
+    if (Platform.OS === 'web') return false;
+    // expo-constants `isDevice` was removed; expo-device is the supported API (false on simulators/emulators).
+    if (!Device.isDevice) return false;
+    return true;
+}
 
 let ViroReactAvailable = false;
 let ViroARScene: any;
@@ -187,16 +197,26 @@ function BlochSphereScene(props: { probabilities: Record<string, number> }) {
 }
 
 
-function ARFallback({ entries }: { entries: [string, number][] }) {
+function ARFallback({
+    entries,
+    reason = 'module',
+}: {
+    entries: [string, number][];
+    reason?: 'web' | 'emulator' | 'module';
+}) {
+    const subtitle =
+        reason === 'web'
+            ? 'AR is not available on web.'
+            : reason === 'emulator'
+              ? 'AR / Viro is skipped on simulator and emulator.\nUse a physical device with a dev build for full AR.'
+              : 'ViroReact native module not found.\nRebuild the app with native code to enable AR.';
+
     return (
         <View style={styles.content}>
             <View style={styles.arPlaceholder}>
                 <Text style={styles.arIcon}>🔮</Text>
                 <Text style={styles.arTitle}>AR Bloch Sphere</Text>
-                <Text style={styles.arSubtitle}>
-                    ViroReact native module not found.{'\n'}
-                    Rebuild the app with native code to enable AR.
-                </Text>
+                <Text style={styles.arSubtitle}>{subtitle}</Text>
                 <View style={styles.divider} />
                 <Text style={styles.instructionTitle}>To enable AR:</Text>
                 <Text style={styles.instructionText}>
@@ -228,14 +248,24 @@ export default function ARViewScreen() {
     const probabilities = useCircuitStore((s) => s.probabilities) ?? {};
     const entries = Object.entries(probabilities);
 
+    if (!shouldAttemptViroNative()) {
+        return (
+            <View style={styles.screen}>
+                <ARFallback
+                    entries={entries}
+                    reason={Platform.OS === 'web' ? 'web' : 'emulator'}
+                />
+            </View>
+        );
+    }
+
     if (!ViroReactAvailable) {
-        // load viro react
         loadViroReact();
 
         if (!ViroReactAvailable) {
             return (
                 <View style={styles.screen}>
-                    <ARFallback entries={entries} />
+                    <ARFallback entries={entries} reason="module" />
                 </View>
             );
         }

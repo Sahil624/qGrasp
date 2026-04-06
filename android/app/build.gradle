@@ -29,10 +29,9 @@ react {
     // codegenDir = file("../../node_modules/@react-native/codegen")
 
     /* Variants */
-    //   The list of variants to that are debuggable. For those we're going to
-    //   skip the bundling of the JS bundle and the assets. By default is just 'debug'.
-    //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
-    // debuggableVariants = ["liteDebug", "prodDebug"]
+    // Only fullDebug skips embedded bundle and expects Metro. noviroDebug must NOT be listed so
+    // assembleNoviroDebug embeds JS (standalone APK). Use fullDebug + emulator for live Metro.
+    debuggableVariants = ["fullDebug"]
 
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
@@ -97,6 +96,17 @@ android {
 
         buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
     }
+    flavorDimensions "arstack"
+    productFlavors {
+        full {
+            dimension "arstack"
+            buildConfigField "boolean", "VIRO_ENABLED", "true"
+        }
+        noviro {
+            dimension "arstack"
+            buildConfigField "boolean", "VIRO_ENABLED", "false"
+        }
+    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -156,21 +166,18 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation 'org.opencv:opencv:4.10.0'
-    // ========================================================================
-    // ViroReact New Architecture (Fabric) Dependencies
-    // https://viro-community.readme.io/docs/installation-instructions
-    implementation project(':gvr_common')
-    implementation project(':arcore_client')
-    implementation project(path: ':react_viro')
-    implementation project(path: ':viro_renderer')
-    implementation 'androidx.media3:media3-exoplayer:1.1.1'
-    implementation 'androidx.media3:media3-exoplayer-dash:1.1.1'
-    implementation 'androidx.media3:media3-exoplayer-hls:1.1.1'
-    implementation 'androidx.media3:media3-exoplayer-smoothstreaming:1.1.1'
-    implementation 'com.google.protobuf.nano:protobuf-javanano:3.1.0'
-    // Required for ARCore Geospatial API
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-    // ========================================================================
+    implementation 'com.google.android.gms:play-services-nearby:18.7.0'
+    // Viro (ARM prebuilt native libs): only `full` — use `noviro` on x86/x86_64 emulators.
+    fullImplementation project(':gvr_common')
+    fullImplementation project(':arcore_client')
+    fullImplementation project(path: ':react_viro')
+    fullImplementation project(path: ':viro_renderer')
+    fullImplementation 'androidx.media3:media3-exoplayer:1.1.1'
+    fullImplementation 'androidx.media3:media3-exoplayer-dash:1.1.1'
+    fullImplementation 'androidx.media3:media3-exoplayer-hls:1.1.1'
+    fullImplementation 'androidx.media3:media3-exoplayer-smoothstreaming:1.1.1'
+    fullImplementation 'com.google.protobuf.nano:protobuf-javanano:3.1.0'
+    fullImplementation 'com.google.android.gms:play-services-location:21.0.1'
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";

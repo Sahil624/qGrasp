@@ -31,6 +31,10 @@ export default function CircuitScreen() {
                         icon="🔮"
                         onPress={() => navigation.navigate('ARView')}
                     />
+                    <HeaderButton
+                        icon="👥"
+                        onPress={() => navigation.navigate('MultiplayerHome')}
+                    />
                 </>
             ),
         });
